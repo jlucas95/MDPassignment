@@ -20,6 +20,11 @@ public class DropAction extends Action {
             throw new IllegalStateException("Cannot drop without something in claw");
         }
 
+        if (tower.isEmpty()) {
+            // create new tower
+            Tower t = new Tower();
+            sPrime.table.add(t);
+        }
         // find tower
         for (Tower t : sPrime.table) {
             if(t.equals(tower)){

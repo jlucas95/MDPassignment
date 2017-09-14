@@ -24,6 +24,9 @@ public class GrabAction extends Action{
         for (Tower t : sPrime.table) {
             if (t.equals(tower)) {
                 Block block = t.removeBlock();
+                if(t.size() == 0){
+                    sPrime.table.remove(t);
+                }
                 sPrime.inClaw = block;
                 break;
             }

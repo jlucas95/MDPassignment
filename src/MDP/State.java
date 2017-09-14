@@ -19,7 +19,7 @@ public class State {
         this.table = table.copy();
     }
 
-    public State(ArrayList<Tower> table) {
+    public State(Table table) {
         this.table.addAll(table);
     }
 

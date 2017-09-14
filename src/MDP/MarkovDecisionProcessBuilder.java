@@ -13,16 +13,18 @@ import java.util.Stack;
 /**
  * Builds a markov decision process from a given starting state
  */
-public class ProcessBuilder {
-    private DefaultDirectedWeightedGraph<State, Action> graph = new DefaultDirectedWeightedGraph<State, Action>(Action.class );
+public class MarkovDecisionProcessBuilder {
     private State start;
 
-    public ProcessBuilder(State start) {
+    public MarkovDecisionProcessBuilder(State start) {
         this.start = start;
-        graph.addVertex(start);
+
     }
 
     public DefaultDirectedWeightedGraph build(){
+
+        DefaultDirectedWeightedGraph<State, Action> graph = new DefaultDirectedWeightedGraph<State, Action>(Action.class );
+        graph.addVertex(start);
 
         Stack<State> toExpand = new Stack<>();
         toExpand.push(start);
@@ -42,9 +44,10 @@ public class ProcessBuilder {
             }
 
         }
+        return graph;
     }
 
     private double determineReward(State s, Action a, State sPrime){
-        throw new NotImplementedException();
+        return 1.0;
     }
 }

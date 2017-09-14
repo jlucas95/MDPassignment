@@ -1,11 +1,12 @@
 package MDP;
 
-import java.util.ArrayList;
+
+import java.util.HashSet;
 
 /**
  * Created by Jan on 14-9-2017.
  */
-public class Table extends ArrayList<Tower>{
+public class Table extends HashSet<Tower> {
 
     public Table copy() {
         Table newTable = new Table();

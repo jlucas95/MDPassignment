@@ -39,6 +39,10 @@ public class Tower {
         }
     }
 
+    public int size(){
+        return blocks.size();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,5 +60,9 @@ public class Tower {
 
     static Tower copy(Tower tower){
         return new Tower(tower.blocks);
+    }
+
+    public boolean isEmpty() {
+        return blocks.isEmpty();
     }
 }
