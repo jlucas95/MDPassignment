@@ -12,13 +12,25 @@ public class Tower {
      */
     private ArrayList<Block> blocks = new ArrayList<Block>();
 
-    public Tower(){}
+    static private int counter = 0;
+
+    private int ID;
+
+    public Tower(){
+        this.ID = counter;
+        counter++;
+    }
 
     public Tower(ArrayList<Block> blocks) {
+
+        this.ID = counter;
+        counter++;
         this.blocks.addAll(blocks);
     }
 
     public Tower(Block block) {
+        this.ID = counter;
+        counter++;
         this.blocks.add(block);
     }
 
@@ -55,7 +67,7 @@ public class Tower {
 
     @Override
     public int hashCode() {
-        return blocks.hashCode();
+        return ID;
     }
 
     static Tower copy(Tower tower){

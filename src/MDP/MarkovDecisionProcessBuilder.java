@@ -8,6 +8,7 @@ import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -35,7 +36,7 @@ public class MarkovDecisionProcessBuilder {
 
             for (Action action : actions) {
                 State newS = action.apply(s);
-                if (!graph.containsVertex(newS)) {
+                if (!inGraph(graph, newS)) {
                     graph.addVertex(newS);
                     graph.addEdge(s, newS, action);
                     graph.setEdgeWeight(action, determineReward(s, action, newS));
@@ -47,7 +48,18 @@ public class MarkovDecisionProcessBuilder {
         return graph;
     }
 
+    private boolean inGraph(DefaultDirectedWeightedGraph<State, Action> graph, State s) {
+        Set<State> states = graph.vertexSet();
+        for (State state : states) {
+            if (state.equals(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private double determineReward(State s, Action a, State sPrime){
         return 1.0;
     }
+
 }

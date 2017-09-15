@@ -2,6 +2,7 @@ package MDP;
 
 
 import java.util.HashSet;
+import java.util.TreeSet;
 
 /**
  * Created by Jan on 14-9-2017.
@@ -15,4 +16,5 @@ public class Table extends HashSet<Tower> {
         }
         return newTable;
     }
+
 }
