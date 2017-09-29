@@ -88,15 +88,6 @@ public class ValueIteration {
     }
 
     private double r(State s, Action a){
-        /*
-        if we get A(s) instead of A (all possible Actions in any given state)
-        then we don't need to check if a is in S of if there is an action on an edge for state s
-        we can just immediately take the reward, by
-        getting the edge for which the action is in s is possible and getting the reward from that.
-
-        no wait, doesn't work, how does it work if we have the wrong action.
-         */
-
         return graph.getEdgeWeight(a);
 
 //        for (Action action : graph.outgoingEdgesOf(s)) {
