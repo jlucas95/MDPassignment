@@ -1,6 +1,5 @@
 package MDP;
-
-/**
+/*
  * Created by Jan on 14-9-2017.
  */
 
@@ -41,7 +40,7 @@ public class MarkovDecisionProcessBuilder {
 
     public DirectedWeightedPseudograph<State, Action> build(){
 
-        DirectedWeightedPseudograph<State, Action> graph = new DirectedWeightedPseudograph<State, Action>(Action.class );
+        DirectedWeightedPseudograph<State, Action> graph = new DirectedWeightedPseudograph<>(Action.class );
         graph.addVertex(start);
 
         Stack<State> toExpand = new Stack<>();
@@ -60,7 +59,16 @@ public class MarkovDecisionProcessBuilder {
                 graph.setEdgeWeight(action, determineReward(s, action, newS));
             }
         }
+
+        AbsorbingGoalState(graph);
         return graph;
+    }
+
+    private void AbsorbingGoalState(DirectedWeightedPseudograph<State, Action> graph) {
+        State goal = getGoal();
+        Set<Action> actions = graph.outgoingEdgesOf(goal);
+        if(actions.size() == 0) throw new IllegalArgumentException("Graph does not contain goal state");
+        graph.removeAllEdges(actions);
     }
 
     private State getEdge(DirectedWeightedPseudograph<State, Action> graph, State s){
@@ -84,7 +92,7 @@ public class MarkovDecisionProcessBuilder {
     }
 
     private double determineReward(State s, Action a, State sPrime){
-        double reward = 0;
+        double reward;
         // if wrong move -> reward -10
         if(a.probability == 0.1) reward = -10;
         // if reaches goal state -> reward +100
