@@ -12,6 +12,11 @@ public class GrabAction extends Action{
         super(tower);
     }
 
+    public GrabAction(Tower tower, double probability){
+        super(tower);
+        setProbability(probability);
+    }
+
     @Override
     public State apply(State s){
         State sPrime = State.copy(s);
@@ -39,9 +44,27 @@ public class GrabAction extends Action{
 
         // for tower: add grabAction to that tower
         for (Tower tower : s.table) {
-            grabActions.add(new GrabAction(Tower.copy(tower)));
+            // the correct action
+            GrabAction action = new GrabAction(Tower.copy(tower));
+            grabActions.add(action);
+
+            // the wrong action(s)
+            List<GrabAction> wrongActions = getWrongActions(s, action);
+            action.setProbability(1 - (wrongActions.size() * 0.1));
+            grabActions.addAll(wrongActions);
         }
         return grabActions;
+    }
+
+    private static List<GrabAction> getWrongActions(State s, GrabAction a) {
+        // If there are multiple blocks that could be grabbed, each wrong block has a 10% chance to be chosen.
+        List<GrabAction> wrongActions = new ArrayList<GrabAction>();
+        for (Tower tower : s.table) {
+            if(!tower.equals(a.tower)){
+                wrongActions.add(new GrabAction(tower, .1));
+            }
+        }
+        return wrongActions;
     }
 
 

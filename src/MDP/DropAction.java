@@ -12,6 +12,11 @@ public class DropAction extends Action {
         super(tower);
     }
 
+    public DropAction(Tower tower, double probability){
+        super(tower);
+        setProbability(probability);
+    }
+
     @Override
     public State apply(State s) {
         State sPrime = State.copy(s);
@@ -45,9 +50,26 @@ public class DropAction extends Action {
 
         // for tower: add drop on tower
         for (Tower tower : s.table) {
-            dropActions.add(new DropAction(Tower.copy(tower)));
+            DropAction action = new DropAction(Tower.copy(tower));
+            dropActions.add(action);
+            List<DropAction> wrongActions = getWrongActions(s, action);
+            action.setProbability(1 - (wrongActions.size() * 0.1));
+            dropActions.addAll(wrongActions);
         }
         return dropActions;
+    }
+
+    //there is a 10% chance that a block is place on top of the wrong block if the block must
+    // be place on top of another block and there are two blocks on which a bock can be placed.
+    private static List<DropAction> getWrongActions(State s, DropAction a) {
+        // If there are multiple blocks that could be grabbed, each wrong block has a 10% chance to be chosen.
+        List<DropAction> wrongActions = new ArrayList<DropAction>();
+        for (Tower tower : s.table) {
+            if(!tower.equals(a.tower)){
+                wrongActions.add(new DropAction(tower, .1));
+            }
+        }
+        return wrongActions;
     }
 
 

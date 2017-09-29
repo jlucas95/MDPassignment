@@ -1,7 +1,6 @@
 import MDP.*;
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.jgrapht.graph.SimpleDirectedWeightedGraph;
-import org.omg.PortableInterceptor.ACTIVE;
+import org.jgrapht.graph.DirectedWeightedPseudograph;
+import org.jgrapht.graph.Pseudograph;
 
 /**
  * Created by Jan on 14-9-2017.
@@ -9,7 +8,7 @@ import org.omg.PortableInterceptor.ACTIVE;
 
 
 public class Main {
-    SimpleDirectedWeightedGraph<Action, State> g = new SimpleDirectedWeightedGraph<Action, State>(State.class);
+    Pseudograph<Action, State> g = new Pseudograph<Action, State>(State.class);
 
 
     public static void main(String[] args) {
@@ -28,7 +27,7 @@ public class Main {
 
         State start = new State(table);
         MarkovDecisionProcessBuilder builder = new MarkovDecisionProcessBuilder(start);
-        DefaultDirectedWeightedGraph graph = builder.build();
+        DirectedWeightedPseudograph<State, Action> graph = builder.build();
 
 
     }

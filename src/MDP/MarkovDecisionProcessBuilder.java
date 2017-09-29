@@ -4,8 +4,7 @@ package MDP;
  * Created by Jan on 14-9-2017.
  */
 
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.jgrapht.graph.DirectedWeightedPseudograph;
 
 import java.util.List;
 import java.util.Set;
@@ -22,9 +21,9 @@ public class MarkovDecisionProcessBuilder {
 
     }
 
-    public DefaultDirectedWeightedGraph build(){
+    public DirectedWeightedPseudograph<State, Action> build(){
 
-        DefaultDirectedWeightedGraph<State, Action> graph = new DefaultDirectedWeightedGraph<State, Action>(Action.class );
+        DirectedWeightedPseudograph<State, Action> graph = new DirectedWeightedPseudograph<State, Action>(Action.class );
         graph.addVertex(start);
 
         Stack<State> toExpand = new Stack<>();
@@ -33,22 +32,30 @@ public class MarkovDecisionProcessBuilder {
         while (!toExpand.isEmpty()){
             State s = toExpand.pop();
             List<Action> actions = Action.getActions(s);
-
             for (Action action : actions) {
                 State newS = action.apply(s);
                 if (!inGraph(graph, newS)) {
                     graph.addVertex(newS);
-                    graph.addEdge(s, newS, action);
-                    graph.setEdgeWeight(action, determineReward(s, action, newS));
                     toExpand.push(newS);
                 }
+                graph.addEdge(s, getEdge(graph, newS), action);
+                graph.setEdgeWeight(action, determineReward(s, action, newS));
             }
-
         }
         return graph;
     }
 
-    private boolean inGraph(DefaultDirectedWeightedGraph<State, Action> graph, State s) {
+    private State getEdge(DirectedWeightedPseudograph<State, Action> graph, State s){
+        Set<State> states = graph.vertexSet();
+        for(State state : states){
+            if(state.equals(s)){
+                return state;
+            }
+        }
+        throw new IllegalArgumentException("State does not exist in graph");
+    }
+
+    private boolean inGraph(DirectedWeightedPseudograph<State, Action> graph, State s) {
         Set<State> states = graph.vertexSet();
         for (State state : states) {
             if (state.equals(s)) {
@@ -59,6 +66,12 @@ public class MarkovDecisionProcessBuilder {
     }
 
     private double determineReward(State s, Action a, State sPrime){
+        // if wrong move -> reward -10
+
+        // if reaches goal state -> reward +100
+
+        // else reward -> -1
+
         return 1.0;
     }
 

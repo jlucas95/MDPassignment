@@ -13,6 +13,8 @@ abstract public class Action extends DefaultWeightedEdge{
 
     Tower tower;
 
+    double probability = 1;
+
 
     public Action(Tower tower) {
         this.tower = tower;
@@ -29,6 +31,13 @@ abstract public class Action extends DefaultWeightedEdge{
             actions.addAll(GrabAction.generateActions(s));
         }
         return actions;
+    }
+
+    public void setProbability(double probability) {
+        if(probability >1 || probability < 0){
+            throw new IllegalArgumentException("Input is not a valid probability");
+        }
+        this.probability = probability;
     }
 
     public abstract State apply(State s);
