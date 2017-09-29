@@ -1,4 +1,5 @@
 import MDP.*;
+import algorithms.ValueIteration;
 import org.jgrapht.graph.DirectedWeightedPseudograph;
 import org.jgrapht.graph.Pseudograph;
 
@@ -29,7 +30,8 @@ public class Main {
         MarkovDecisionProcessBuilder builder = new MarkovDecisionProcessBuilder(start);
         DirectedWeightedPseudograph<State, Action> graph = builder.build();
 
-
+        ValueIteration vi = new ValueIteration(graph,200);
+        vi.run();
     }
 
 }

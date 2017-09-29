@@ -13,12 +13,21 @@ abstract public class Action extends DefaultWeightedEdge{
 
     Tower tower;
 
-    double probability = 1;
+    public double getProbability() {
+        return probability;
+    }
 
+    double probability = 1;
 
     public Action(Tower tower) {
         this.tower = tower;
     }
+
+    public abstract boolean equals(Action a);
+
+//    public boolean equals(Action a) {
+//        return a.getClass() == this.getClass() && a.tower.getTopBlock() == this.tower.getTopBlock();
+//    }
 
     static List<Action> getActions(State s){
         ArrayList<Action> actions = new ArrayList<>();

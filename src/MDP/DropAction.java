@@ -12,6 +12,12 @@ public class DropAction extends Action {
         super(tower);
     }
 
+    @Override
+    public boolean equals(Action a) {
+        if(a.getClass() != this.getClass()) return false;
+        return a.tower.getTopBlock() == this.tower.getTopBlock();
+    }
+
     public DropAction(Tower tower, double probability){
         super(tower);
         setProbability(probability);
