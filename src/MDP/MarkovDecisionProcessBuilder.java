@@ -16,6 +16,24 @@ import java.util.Stack;
 public class MarkovDecisionProcessBuilder {
     private State start;
 
+    private State goalState = getGoal();
+
+    private State getGoal() {
+
+        Block A = new Block("A");
+        Block B = new Block("B");
+        Block C = new Block("C");
+        Tower tower = new Tower();
+        tower.addBlock(A);
+        tower.addBlock(C);
+        tower.addBlock(B);
+
+        Table table = new Table();
+        table.add(tower);
+
+        return new State(table);
+    }
+
     public MarkovDecisionProcessBuilder(State start) {
         this.start = start;
 
@@ -66,13 +84,14 @@ public class MarkovDecisionProcessBuilder {
     }
 
     private double determineReward(State s, Action a, State sPrime){
+        double reward = 0;
         // if wrong move -> reward -10
-
+        if(a.probability == 0.1) reward = -10;
         // if reaches goal state -> reward +100
-
-        // else reward -> -1
-
-        return 1.0;
+        else if(sPrime.equals(goalState)) reward = 100;
+        // else -> reward -1
+        else reward = -1;
+        return reward;
     }
 
 }
