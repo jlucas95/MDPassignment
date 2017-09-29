@@ -6,6 +6,7 @@ import org.jgrapht.graph.DirectedWeightedPseudograph;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -20,7 +21,6 @@ public class ValueIteration {
 
     DirectedWeightedPseudograph<State, Action> graph;
     final double gamma = 0.9;
-    private Function<State, Double> o;
 
     public ValueIteration(DirectedWeightedPseudograph<State, Action> graph, double epsilon) {
         this.graph = graph;
@@ -38,32 +38,36 @@ public class ValueIteration {
             utility.put(o, 0.0);
         }
 
-        double delta = 0;
+        double delta;
         do{
+            delta = 0;
+            HashMap<State, Double> uPrime = new HashMap<>(utility);
             for (State s : S) {
                 Double newu = Double.NEGATIVE_INFINITY;
                 for (Action a : graph.outgoingEdgesOf(s) ) {
-                    double u = r(s, a) + gamma * sum(S, (State sPrime ) -> t(s,a,sPrime) * utility.get(sPrime));
+                    double u = r(s, a) + gamma * sum(S, utility, (State sPrime, HashMap<State, Double> ut) -> {return t(s,a,sPrime) * ut.get(sPrime);});
                     if (u > newu){
                         newu = u;
                         pi.put(s, a);
                     }
                 }
+                if(Double.isInfinite(newu)) newu = 0.0;
                 double difference = Math.abs(newu - utility.get(s));
                 if(difference > delta){
                     delta = difference;
                 }
-                utility.put(s, newu);  // u'(s) := u;
+                uPrime.put(s, newu);  // u'(s) := u;
             }
-            // u := u'
-        } while (delta < epsilon);
+            utility = uPrime;
+        } while (delta > epsilon);
         return pi;
     }
 
-    private double sum(Set<State> S, Function<State, Double> func) {
+    private double sum(Set<State> S, HashMap<State, Double> u, BiFunction<State, HashMap<State, Double>, Double> func) {
         double sum = 0.0;
+
         for (State s : S) {
-            sum += func.apply(s);
+            sum += func.apply(s, u);
         }
         return sum;
     }
