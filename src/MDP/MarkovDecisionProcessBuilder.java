@@ -5,9 +5,7 @@ package MDP;
 
 import org.jgrapht.graph.DirectedWeightedPseudograph;
 
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Builds a markov decision process from a given starting state
@@ -65,11 +63,23 @@ public class MarkovDecisionProcessBuilder {
     }
 
     private void AbsorbingGoalState(DirectedWeightedPseudograph<State, Action> graph) {
-        State goal = getGoal();
-        Set<Action> actions = graph.outgoingEdgesOf(goal);
+        State goal = getGoal(graph);
+        Set<Action> actions = new HashSet<Action>(graph.outgoingEdgesOf(goal));
         if(actions.size() == 0) throw new IllegalArgumentException("Graph does not contain goal state");
-        graph.removeAllEdges(actions);
+        for (Action action : actions) {
+            graph.removeEdge(action);
+        }
+
     }
+
+    private State getGoal(DirectedWeightedPseudograph<State, Action> graph) {
+        State goal = getGoal();
+        for (State state : graph.vertexSet()) {
+            if(state.equals(goal)) return state;
+        }
+        throw new IllegalArgumentException("graph does not contain goal state");
+    }
+
 
     private State getEdge(DirectedWeightedPseudograph<State, Action> graph, State s){
         Set<State> states = graph.vertexSet();

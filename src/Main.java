@@ -3,6 +3,8 @@ import algorithms.ValueIteration;
 import org.jgrapht.graph.DirectedWeightedPseudograph;
 import org.jgrapht.graph.Pseudograph;
 
+import java.util.HashMap;
+
 /**
  * Created by Jan on 14-9-2017.
  */
@@ -30,8 +32,8 @@ public class Main {
         MarkovDecisionProcessBuilder builder = new MarkovDecisionProcessBuilder(start);
         DirectedWeightedPseudograph<State, Action> graph = builder.build();
 
-        ValueIteration vi = new ValueIteration(graph,200);
-        vi.run();
+        ValueIteration vi = new ValueIteration(graph,0.01);
+        HashMap<State, Action> run = vi.run();
     }
 
 }
