@@ -1,4 +1,5 @@
 import MDP.*;
+import algorithms.PolicyIteration;
 import algorithms.ValueIteration;
 import org.jgrapht.graph.DirectedWeightedPseudograph;
 import org.jgrapht.graph.Pseudograph;
@@ -33,7 +34,10 @@ public class Main {
         DirectedWeightedPseudograph<State, Action> graph = builder.build();
 
         ValueIteration vi = new ValueIteration(graph,0.01);
-        HashMap<State, Action> run = vi.run();
+        HashMap<State, Action> runVi = vi.run();
+
+        PolicyIteration pi = new PolicyIteration(graph);
+        HashMap<State, Action> runPi = pi.run();
     }
 
 }

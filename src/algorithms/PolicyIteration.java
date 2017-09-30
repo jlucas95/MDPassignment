@@ -18,7 +18,6 @@ public class PolicyIteration {
     public PolicyIteration(DirectedWeightedPseudograph<State, Action> g){
         this.graph = g;
         this.S = graph.vertexSet();
-
     }
 
     public HashMap<State, Action> run(){
@@ -28,24 +27,39 @@ public class PolicyIteration {
             HashMap<State, Double> utility = calculateUtility(pi);
             changed = false;
             for (State s : S) {
-                Action a = argmax(graph.outgoingEdgesOf(s), (Action aPrime) -> {return
-                        r(s, aPrime) + gamma * sum(S, (State sPrime) -> {return t(s, aPrime, sPrime) * u(s, utility);});});
-                if(pi.get(s) != a){
-                    pi.put(s, a);
-                    changed = true;
+                if (!graph.outgoingEdgesOf(s).isEmpty()){
+                    Action a = argmax(graph.outgoingEdgesOf(s), (Action aPrime) -> {return
+                            r(s, aPrime) + gamma * sum(S, (State sPrime) -> {return t(s, aPrime, sPrime) * u(s, utility);});});
+                    if(pi.get(s) != a) {
+                        pi.put(s, a);
+                        changed = true;
+                    }
                 }
             }
-        }while (changed);
+        } while (changed);
         return pi;
     }
 
     private HashMap<State, Action> initPolicy(DirectedWeightedPseudograph<State, Action> graph) {
-
-        
+        HashMap<State, Action> policy = new HashMap<>();
+        for (State state : S) {
+            Set<Action> outgoingEdges = graph.outgoingEdgesOf(state);
+            if (!outgoingEdges.isEmpty()) {
+                policy.put(state, (Action) outgoingEdges.toArray()[0]);
+            }
+        }
+        return policy;
     }
 
     private HashMap<State,Double> calculateUtility(HashMap<State, Action> pi) {
-
+        HashMap<State, Double> utility = new HashMap<>();
+        for (State state : S) {
+            // fucked if state is absorbing state b/c that doesn't have a policy (or possible outgoing action);
+            if (!graph.outgoingEdgesOf(state).isEmpty()) {
+                utility.put(state, graph.getEdgeWeight(pi.get(state)));
+            }
+        }
+        return utility;
     }
 
     private double u(State s, HashMap<State, Double> pi) {
