@@ -11,26 +11,26 @@ import java.util.function.Function;
 
 public class PolicyIteration {
 
-    DirectedWeightedPseudograph<State, Action> graph;
-    Set<State> S;
-    double gamma = 0.9;
+    private DirectedWeightedPseudograph<State, Action> graph;
+    private Set<State> S;
+    private double gamma = 0.9;
 
-    public PolicyIteration(DirectedWeightedPseudograph<State, Action> g){
+    public PolicyIteration(DirectedWeightedPseudograph<State, Action> g) {
         this.graph = g;
         this.S = graph.vertexSet();
     }
 
-    public HashMap<State, Action> run(){
+    public HashMap<State, Action> run() {
         HashMap<State, Action> pi = initPolicy(graph);
         boolean changed;
-        do{
+        do {
             HashMap<State, Double> utility = calculateUtility(pi);
             changed = false;
             for (State s : S) {
-                if (!graph.outgoingEdgesOf(s).isEmpty()){
-                    Action a = argmax(graph.outgoingEdgesOf(s), (Action aPrime) -> {return
-                            r(s, aPrime) + gamma * sum(S, (State sPrime) -> {return t(s, aPrime, sPrime) * u(s, utility);});});
-                    if(pi.get(s) != a) {
+                if (!graph.outgoingEdgesOf(s).isEmpty()) {
+                    Action a = argmax(graph.outgoingEdgesOf(s), (Action aPrime) ->
+                            r(s, aPrime) + gamma * sum(S, (State sPrime) -> t(s, aPrime, sPrime) * u(s, utility)));
+                    if (pi.get(s) != a) {
                         pi.put(s, a);
                         changed = true;
                     }
@@ -51,7 +51,7 @@ public class PolicyIteration {
         return policy;
     }
 
-    private HashMap<State,Double> calculateUtility(HashMap<State, Action> pi) {
+    private HashMap<State, Double> calculateUtility(HashMap<State, Action> pi) {
         HashMap<State, Double> utility = new HashMap<>();
         for (State state : S) {
             // fucked if state is absorbing state b/c that doesn't have a policy (or possible outgoing action);
@@ -66,21 +66,21 @@ public class PolicyIteration {
         return pi.get(s);
     }
 
-    public Action argmax(Set<Action> As, Function<Action, Double> func){
+    public Action argmax(Set<Action> As, Function<Action, Double> func) {
         double u = Double.NEGATIVE_INFINITY;
         Action a = null;
         for (Action ac : As) {
             Double val = func.apply(ac);
-            if(val > u){
+            if (val > u) {
                 u = val;
                 a = ac;
             }
         }
-        if(a != null) return a;
+        if (a != null) return a;
         throw new IllegalStateException("something went wrong");
     }
 
-    public double sum(Set<State> states, Function<State, Double> func){
+    public double sum(Set<State> states, Function<State, Double> func) {
         double sum = 0;
         for (State s : states) {
             sum += func.apply(s);
@@ -88,7 +88,7 @@ public class PolicyIteration {
         return sum;
     }
 
-    private double t(State s, Action a, State sPrime){
+    private double t(State s, Action a, State sPrime) {
         /*
         can't it just be: a.getProbability(); ??
          */
@@ -96,7 +96,7 @@ public class PolicyIteration {
         Set<Action> edges = graph.getAllEdges(s, sPrime);
 
         for (Action action : edges) {
-            if(action.equals(a)){
+            if (action.equals(a)) {
                 return action.getProbability();
             }
         }

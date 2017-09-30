@@ -14,9 +14,7 @@ import java.util.HashMap;
 public class Main {
     Pseudograph<Action, State> g = new Pseudograph<Action, State>(State.class);
 
-
     public static void main(String[] args) {
-
         Block a = new Block("A");
         Block b = new Block("B");
         Block c = new Block("C");
@@ -39,5 +37,4 @@ public class Main {
         PolicyIteration pi = new PolicyIteration(graph);
         HashMap<State, Action> runPi = pi.run();
     }
-
 }
