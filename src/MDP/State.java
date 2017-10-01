@@ -48,4 +48,12 @@ public class State {
     static State copy(State s){
         return new State(s.inClaw, s.table);
     }
+
+    @Override
+    public String toString() {
+        return "State{" +
+                "inClaw=" + inClaw +
+                ", table=" + table +
+                '}';
+    }
 }

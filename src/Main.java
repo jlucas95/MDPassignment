@@ -36,5 +36,10 @@ public class Main {
 
         PolicyIteration pi = new PolicyIteration(graph);
         HashMap<State, Action> runPi = pi.run();
+
+//        for (HashMap.Entry entry : runPi.entrySet()) {
+//            System.out.println(entry.getValue());
+//        }
     }
+
 }

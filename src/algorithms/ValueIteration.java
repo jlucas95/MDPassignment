@@ -16,18 +16,12 @@ public class ValueIteration {
 
     private double epsilon;
     private Set<State> S;
-
-//    private Set<Action> A;
-
     DirectedWeightedPseudograph<State, Action> graph;
     final double gamma = 0.9;
 
     public ValueIteration(DirectedWeightedPseudograph<State, Action> graph, double epsilon) {
         this.graph = graph;
         this.S = graph.vertexSet();
-
-//        this.A = graph.edgeSet();
-
         this.epsilon = epsilon;
     }
 
@@ -45,7 +39,8 @@ public class ValueIteration {
             for (State s : S) {
                 Double newu = Double.NEGATIVE_INFINITY;
                 for (Action a : graph.outgoingEdgesOf(s) ) {
-                    double u = r(s, a) + gamma * sum(S, utility, (State sPrime, HashMap<State, Double> ut) -> {return t(s,a,sPrime) * ut.get(sPrime);});
+                    double u = r(s, a) + gamma * sum(S, utility, (State sPrime, HashMap<State, Double> ut) ->
+                            t(s,a,sPrime) * ut.get(sPrime));
                     if (u > newu){
                         newu = u;
                         pi.put(s, a);
@@ -56,7 +51,7 @@ public class ValueIteration {
                 if(difference > delta){
                     delta = difference;
                 }
-                uPrime.put(s, newu);  // u'(s) := u;
+                uPrime.put(s, newu);
             }
             utility = uPrime;
         } while (delta > epsilon);
@@ -76,7 +71,6 @@ public class ValueIteration {
         /*
         can't it just be: a.getProbability(); ??
          */
-
         Set<Action> edges = graph.getAllEdges(s, sPrime);
 
         for (Action action : edges) {
@@ -89,12 +83,6 @@ public class ValueIteration {
 
     private double r(State s, Action a){
         return graph.getEdgeWeight(a);
-
-//        for (Action action : graph.outgoingEdgesOf(s)) {
-//            if (action.equals(a)) return graph.getEdgeWeight(action);
-//        }
-//        return 0;
-//        throw new IllegalArgumentException("Arguments of method are fucked, check that shit out yo!");
     }
 
 }

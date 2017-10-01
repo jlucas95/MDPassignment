@@ -77,4 +77,12 @@ public class Tower {
     public boolean isEmpty() {
         return blocks.isEmpty();
     }
+
+    @Override
+    public String toString() {
+        return "Tower{" +
+                "blocks=" + blocks +
+                ", ID=" + ID +
+                '}';
+    }
 }

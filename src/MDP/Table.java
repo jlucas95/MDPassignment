@@ -43,4 +43,13 @@ public class Table extends HashSet<Tower> {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Table{");
+        for (Tower tower : this) {
+             sb.append(tower.toString());
+        }
+        return sb.append("}").toString();
+    }
 }

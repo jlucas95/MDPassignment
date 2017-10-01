@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.jgrapht:jgrapht-core:1.0.1" level="project" />
+    <orderEntry type="library" name="org.ejml:ejml-all:0.32" level="project" />
   </component>
 </module>
