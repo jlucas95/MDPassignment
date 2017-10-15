@@ -18,8 +18,8 @@ public class DropAction extends Action {
         return a.tower.getTopBlock() == this.tower.getTopBlock();
     }
 
-    public DropAction(Tower tower, double probability){
-        super(tower);
+    public DropAction(Tower tower, double probability, DropAction other){
+        super(tower, other.ID);
         setProbability(probability);
     }
 
@@ -72,11 +72,16 @@ public class DropAction extends Action {
         List<DropAction> wrongActions = new ArrayList<DropAction>();
         for (Tower tower : s.table) {
             if(!tower.equals(a.tower)){
-                wrongActions.add(new DropAction(tower, .1));
+                wrongActions.add(new DropAction(tower, .1, a));
             }
         }
         return wrongActions;
     }
 
+
+
+    String actionString() {
+        return "Drop on ";
+    }
 
 }

@@ -12,6 +12,11 @@ public class GrabAction extends Action{
         super(tower);
     }
 
+    public GrabAction(Tower tower, double probability, GrabAction other){
+        super(tower, other.ID);
+        setProbability(probability);
+    }
+
     @Override
     public boolean equals(Action a) {
         if(a.getClass() != this.getClass()) return false;
@@ -67,10 +72,14 @@ public class GrabAction extends Action{
         List<GrabAction> wrongActions = new ArrayList<GrabAction>();
         for (Tower tower : s.table) {
             if(!tower.equals(a.tower)){
-                wrongActions.add(new GrabAction(tower, .1));
+                wrongActions.add(new GrabAction(tower, .1, a));
             }
         }
         return wrongActions;
+    }
+
+    String actionString(){
+        return "grab ";
     }
 
 

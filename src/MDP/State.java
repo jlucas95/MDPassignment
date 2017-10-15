@@ -1,7 +1,5 @@
 package MDP;
 
-import java.util.ArrayList;
-
 /**
  * Created by Jan on 14-9-2017.
  */
@@ -10,8 +8,29 @@ public class State {
     Block inClaw = null;
     Table table = new Table();
 
+    private static State startState = null;
+
     public State() {
 
+    }
+
+    public static State getStartState(){
+        if(startState == null) {
+
+            Block a = new Block("A");
+            Block b = new Block("B");
+            Block c = new Block("C");
+
+            Tower tower = new Tower();
+            tower.addBlock(c);
+            tower.addBlock(b);
+            tower.addBlock(a);
+
+            Table table = new Table();
+            table.add(tower);
+            startState = new State(table);
+        }
+        return startState;
     }
 
     public State(Block inClaw, Table table) {

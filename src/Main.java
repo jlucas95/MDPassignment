@@ -14,20 +14,10 @@ import java.util.HashMap;
 public class Main {
     Pseudograph<Action, State> g = new Pseudograph<Action, State>(State.class);
 
+
     public static void main(String[] args) {
-        Block a = new Block("A");
-        Block b = new Block("B");
-        Block c = new Block("C");
 
-        Tower tower = new Tower();
-        tower.addBlock(c);
-        tower.addBlock(b);
-        tower.addBlock(a);
-
-        Table table = new Table();
-        table.add(tower);
-
-        State start = new State(table);
+        State start = State.getStartState();
         MarkovDecisionProcessBuilder builder = new MarkovDecisionProcessBuilder(start);
         DirectedWeightedPseudograph<State, Action> graph = builder.build();
 
