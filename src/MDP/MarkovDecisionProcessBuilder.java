@@ -11,28 +11,15 @@ import java.util.*;
  * Builds a markov decision process from a given starting state
  */
 public class MarkovDecisionProcessBuilder {
+    private final boolean absorb;
     private State start;
 
-    private State goalState = getGoal();
+    private State goalState = State.getGoalState();
 
-    private State getGoal() {
 
-        Block A = new Block("A");
-        Block B = new Block("B");
-        Block C = new Block("C");
-        Tower tower = new Tower();
-        tower.addBlock(A);
-        tower.addBlock(C);
-        tower.addBlock(B);
-
-        Table table = new Table();
-        table.add(tower);
-
-        return new State(table);
-    }
-
-    public MarkovDecisionProcessBuilder(State start) {
+    public MarkovDecisionProcessBuilder(State start, boolean absorbingGoalState) {
         this.start = start;
+        this.absorb = absorbingGoalState;
 
     }
 
@@ -57,8 +44,7 @@ public class MarkovDecisionProcessBuilder {
                 graph.setEdgeWeight(action, determineReward(s, action, newS));
             }
         }
-
-        AbsorbingGoalState(graph);
+        if(absorb) AbsorbingGoalState(graph);
         return graph;
     }
 
@@ -73,7 +59,7 @@ public class MarkovDecisionProcessBuilder {
     }
 
     private State getGoal(DirectedWeightedPseudograph<State, Action> graph) {
-        State goal = getGoal();
+        State goal = State.getGoalState();
         for (State state : graph.vertexSet()) {
             if(state.equals(goal)) return state;
         }

@@ -9,6 +9,7 @@ public class State {
     Table table = new Table();
 
     private static State startState = null;
+    private static State goalState = null;
 
     public State() {
 
@@ -31,6 +32,24 @@ public class State {
             startState = new State(table);
         }
         return startState;
+    }
+
+    public static State getGoalState(){
+        if (goalState == null) {
+            Block A = new Block("A");
+            Block B = new Block("B");
+            Block C = new Block("C");
+            Tower tower = new Tower();
+            tower.addBlock(A);
+            tower.addBlock(C);
+            tower.addBlock(B);
+
+            Table table = new Table();
+            table.add(tower);
+
+            goalState = new State(table);
+        }
+        return goalState;
     }
 
     public State(Block inClaw, Table table) {
@@ -70,9 +89,10 @@ public class State {
 
     @Override
     public String toString() {
-        return "State{" +
-                "inClaw=" + inClaw +
-                ", table=" + table +
-                '}';
+        String clawName = " ";
+        if (inClaw != null) clawName = inClaw.name;
+
+        return "inClaw=" + clawName +
+                ", table=" + table;
     }
 }

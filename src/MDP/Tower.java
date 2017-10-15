@@ -80,9 +80,10 @@ public class Tower {
 
     @Override
     public String toString() {
-        return "Tower{" +
-                "blocks=" + blocks +
-                ", ID=" + ID +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        for (Block block : blocks) {
+            sb.append(block.name);
+        }
+        return sb.toString();
     }
 }

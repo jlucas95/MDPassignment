@@ -18,7 +18,7 @@ public class Main {
     public static void main(String[] args) {
 
         State start = State.getStartState();
-        MarkovDecisionProcessBuilder builder = new MarkovDecisionProcessBuilder(start);
+        MarkovDecisionProcessBuilder builder = new MarkovDecisionProcessBuilder(start, true);
         DirectedWeightedPseudograph<State, Action> graph = builder.build();
 
         ValueIteration vi = new ValueIteration(graph,0.01);

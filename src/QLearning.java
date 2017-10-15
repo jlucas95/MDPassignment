@@ -12,7 +12,7 @@ public class QLearning {
     public static void main(String[] args) {
         // Initialize Qlearner
         QLearner qLearner = new QLearner(0.9);
-        qLearner.simulate(State.getStartState(), 100);
+        qLearner.simulate(State.getStartState(), 1000);
         Map<State, Action> policy = qLearner.getPolicy();
 
     }
